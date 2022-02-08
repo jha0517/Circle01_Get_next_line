@@ -12,6 +12,20 @@
 
 #include "get_next_line.h"
 
+char	*ft_strcpy(char *dest, char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
 char	*check_rest(char *rest, char **line)
 {
 	char	*p_n;
@@ -22,9 +36,9 @@ char	*check_rest(char *rest, char **line)
 		p_n = ft_strchr(rest, '\n');
 		if (p_n)
 		{
-			p_n = "\0";
+			*p_n = '\0';
 			*line = ft_strdup(rest);
-			strcpy(rest, ++p_n);
+			ft_strcpy(rest, ++p_n);
 		}
 		else
 		{
@@ -41,40 +55,26 @@ char	*check_rest(char *rest, char **line)
 
 char	*get_next_line(int fd, char **line)
 {
-	char		buf[1000 + 1];
+	char		buf[BUFFER_SIZE + 1];
 	int			byte_was_read;
 	char		*p_n;
-	int			flag;
 	static char	*rest;
+	char		*tmp;
 
-	flag = 1;
-	check_rest(rest, line);
-	while (flag && byte_was_read)
+	buf[0] = '\0';
+	p_n = check_rest(rest, line);
+	while (!p_n && (byte_was_read))
 	{
 		byte_was_read = '\0';
+		byte_was_read = read(fd, buf, BUFFER_SIZE);
 		p_n = ft_strchr(buf, '\n');
 		if (p_n)
 		{
-			printf("buf : %s", buf);
 			*p_n = '\0';
-			flag = 0;
 			p_n++;
-			printf("before p_n : %s\n", p_n);
 			rest = ft_strdup(p_n);
-			printf("after p_n : %s\n", p_n);
 		}
 		*line = ft_strjoin(*line, buf);
-		printf("*line : %s\n", *line);
-		byte_was_read = read(fd, buf, 1000);
 	}
 	return (*line);
-}
-
-int main()
-{
-	int		fd;
-	char	*line;
-
-	fd = open("test.c", O_RDONLY);
-	printf("%s\n", get_next_line(fd, &line));
 }
