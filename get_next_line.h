@@ -17,14 +17,14 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
-# define BUFFER_SIZE 100
 
 char	*check_rest(char *rest, char **line);
-char	*get_next_line(int fd, char **line);
+char    *get_next_line(int fd, char **line);
 void	ft_strclr(char *s);
 char	*ft_strchr(const char *str, int i);
-int		clearft_strlen(const char *str);
+int     ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strdup(const char *src);
+char	*ft_strdup(const char *src, int len);
+int	    ft_strlen_end(const char *str);
 
 #endif

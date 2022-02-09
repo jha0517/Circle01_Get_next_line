@@ -48,6 +48,19 @@ int	ft_strlen(const char *str)
 	return (i);
 }
 
+int	ft_strlen_end(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str)
+	{
+		str--;
+		i++;
+	}
+	return (i);
+}
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		len;
@@ -69,14 +82,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (str);
 }
 
-char	*ft_strdup(const char *src)
+char	*ft_strdup(const char *src, int len)
 {
 	char	*dest;
-	int		len;
 	int		i;
 
 	i = 0;
-	len = ft_strlen(src);
 	dest = malloc(sizeof(char) * len + 1);
 	if (!(dest))
 		return (NULL);
