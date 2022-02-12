@@ -24,18 +24,24 @@ void	ft_strclr(char *s)
 	}
 }
 
-char	*ft_strchr(const char *str, int i)
+int	ft_strchr(const char *str, int i, int len)
 {
 	char	*ptr;
+	int	cpt;
 
+	cpt = len;
 	ptr = (char *) str;
-	while (*ptr != (char)i && ptr)
+	while (*ptr != (char)i && cpt >= 0 && ptr)
 	{
-		if (*ptr == '\0')
-			return (NULL);
-		ptr++;
+		if (cpt == 0)
+			return (-1);
+		if (ptr)
+			ptr++;
+		else
+			return (len-cpt);
+		cpt--;
 	}
-	return (&(*ptr));
+	return (len - cpt);
 }
 
 int	ft_strlen(const char *str)
@@ -45,19 +51,6 @@ int	ft_strlen(const char *str)
 	i = 0;
 	while (str[i])
 		i++;
-	return (i);
-}
-
-int	ft_strlen_end(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str)
-	{
-		str--;
-		i++;
-	}
 	return (i);
 }
 
@@ -88,13 +81,16 @@ char	*ft_strdup(const char *src, int len)
 	int		i;
 
 	i = 0;
+	if(!src)
+		return (NULL);
 	dest = malloc(sizeof(char) * len + 1);
 	if (!(dest))
 		return (NULL);
-	while (src[i])
+	while (src[i] && len > 0)
 	{
 		dest[i] = src[i];
 		i++;
+		len--;
 	}
 	dest[i] = '\0';
 	return (dest);

@@ -18,13 +18,12 @@
 # include <string.h>
 # include <stdio.h>
 
-char	*check_rest(char *rest, char **line);
+int     check_rest(char *rest, char **line);
 char    *get_next_line(int fd, char **line);
 void	ft_strclr(char *s);
-char	*ft_strchr(const char *str, int i);
+int     ft_strchr(const char *str, int i, int len);
 int     ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *src, int len);
-int	    ft_strlen_end(const char *str);
 
 #endif

@@ -12,102 +12,84 @@
 
 #include "get_next_line.h"
 
-char	*ft_strcpy(char *dest, char *src)
+char	*ft_strlcpy(char *dest, char *src, int len)
 {
 	int	i;
 
 	i = 0;
-	while (src[i])
+	while (src[i] && len > 0)
 	{
 		dest[i] = src[i];
 		i++;
+		len--;
 	}
 	dest[i] = '\0';
 	return (dest);
 }
 
-char	*check_rest(char *rest, char **line)
+int	check_rest(char *rest, char **line)
 {
-	char	*p_n;
-	int		len;
+	int	back_slash_pos;
+	int	len;
+	int	flag;
 
+	flag = 1;
 	len = 0;
-	p_n = NULL;
-	if (rest)
+	back_slash_pos = 0;
+	if ((flag != 0)&& (rest != NULL))
 	{
-		printf("testa\n");
-		p_n = ft_strchr(rest, '\n');
-		printf("testb\n");
-		if (p_n)
+		len = ft_strlen(rest);
+		back_slash_pos = ft_strchr(rest, '\n', len);		
+		if (back_slash_pos != -1)
 		{
-			printf("testc\n");
-			*p_n = '\0';
-			len = ft_strlen_end(rest);
-			*line = ft_strdup(rest, len);
-			printf("testd\n");
-			ft_strcpy(rest, ++p_n);
+			rest[back_slash_pos] = '\0';
+			*line = ft_strdup(rest, back_slash_pos);
+			back_slash_pos++;
+			ft_strlcpy(rest, &rest[back_slash_pos], BUFFER_SIZE - back_slash_pos);
+			flag= 0;
 		}
 		else
 		{
-			len = ft_strlen_end(rest);
-			*line = ft_strdup(rest, len);
+			len = ft_strlen(rest);
+			*line = ft_strdup(rest, BUFFER_SIZE);
 			ft_strclr(rest);
 		}
+		
 	}
 	else
 	{
 		*line = "\0";
 	}
-	return (p_n);
+	return (back_slash_pos);
 }
 
 char	*get_next_line(int fd, char **line)
 {
 	char		buf[BUFFER_SIZE + 1];
 	int			byte_was_read;
-	char		*p_n;
+	int			back_slash_pos;
 	static char	*rest;
-	int			len;
-	char		*buf_tmp;
+	int			flag;
 
-	buf_tmp = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if (!buf_tmp):
-		return (NULL);
-	buf_tmp[BUFFTER_SIZE + 1]= '\0';
-	buf[0] = '\0';
-	printf("test0\n");
-	p_n = check_rest(rest, line);
-	printf("test1\n");
-	while (!p_n && (byte_was_read))
+	flag = 1;
+	buf[BUFFER_SIZE]= '\0';
+	back_slash_pos = check_rest(rest, line);
+	byte_was_read = 1;
+	while (flag && byte_was_read)
 	{
-		printf("test2\n");
 		byte_was_read = '\0';
 		byte_was_read = read(fd, buf, BUFFER_SIZE);
-		printf("test3\n");
-		p_n = ft_strchr(buf, '\n');
-		printf("test4\n");
-		if (p_n)
+		back_slash_pos = ft_strchr(buf, '\n', BUFFER_SIZE);
+		if (back_slash_pos != -1)
 		{
-			printf("test5\n");
-			*p_n = '\0';
-			p_n++;
-			len = ft_strlen_end(buf);
-			rest = ft_strdup(p_n, len);
-			printf("test6\n");
+			buf[back_slash_pos] = '\0';
+			back_slash_pos++;
+			rest = ft_strdup(&buf[back_slash_pos], BUFFER_SIZE - back_slash_pos);
+			flag = 0;
 		}
-		printf("test1\n");
+		if(!byte_was_read)
+			ft_strclr(buf);
 		*line = ft_strjoin(*line, buf);
-		printf("test7\n");
 	}
 	return (*line);
-}
-
-int main()
-{
-	int fd;
-	char	*line;
-	
-	fd = 0;
-	fd = open("test", O_RDONLY, fd);
-	printf("%s\n",get_next_line(fd, &line));
 }
