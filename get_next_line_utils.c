@@ -19,6 +19,7 @@ void	ft_strclr(char *s)
 	i = 0;
 	while (s && *(s + i))
 	{
+		// printf("s + i = %c\n", *(s+i));
 		*(s + i) = '\0';
 		i++;
 	}
@@ -63,15 +64,29 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	len = ft_strlen(s1) + ft_strlen(s2);
+	// printf("len s1 -%i, len s2 -%i\n",ft_strlen(s1), ft_strlen(s2));
+	// printf("total len : %i\n", len);
 	result = (char *)malloc(sizeof(char) * (len + 1));
 	if (!result)
 		return (NULL);
 	str = result;
 	while (*s1)
-		*result++ = *s1++;
+	{
+		*result = *s1;
+		s1++;
+		result++;
+	}
 	while (*s2)
-		*result++ = *s2++;
+	{
+		// printf("*s2: %c\n", *s2);
+		*result = *s2;
+		result++;
+		s2++;
+	}
+	// printf("last carac : %c\n", *(result - 1));
 	*result = '\0';
+	// free(result);
+	// printf("return str : %s\n", str);
 	return (str);
 }
 

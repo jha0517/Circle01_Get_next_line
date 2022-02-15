@@ -19,7 +19,8 @@
 # include <stdio.h>
 
 int     check_rest(char *rest, char **line);
-char    *get_next_line(int fd, char **line);
+// char    *get_next_line(int fd, char **line);
+char    *get_next_line(int fd);
 void	ft_strclr(char *s);
 int     ft_strchr(const char *str, int i, int len);
 int     ft_strlen(const char *str);
