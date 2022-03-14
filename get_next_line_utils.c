@@ -1,51 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyujung <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/11 20:12:04 by hyujung           #+#    #+#             */
-/*   Updated: 2021/12/11 20:12:47 by hyujung          ###   ########.fr       */
+/*   Created: 2022/02/01 20:25:14 by hyujung           #+#    #+#             */
+/*   Updated: 2022/02/02 19:37:37 by hyujung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_strclr(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s && *(s + i))
-	{
-		// printf("s + i = %c\n", *(s+i));
-		*(s + i) = '\0';
-		i++;
-	}
-}
-
-int	ft_strchr(const char *str, int i, int len)
-{
-	char	*ptr;
-	int	cpt;
-
-	cpt = len;
-	ptr = (char *) str;
-	while (*ptr != (char)i && cpt >= 0 && ptr)
-	{
-		if (cpt == 0)
-			return (-1);
-		if (ptr)
-			ptr++;
-		else
-			return (len-cpt);
-		cpt--;
-	}
-	return (len - cpt);
-}
-
-int	ft_strlen(const char *str)
+int	sln(char *str)
 {
 	int	i;
 
@@ -55,58 +22,58 @@ int	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*getl_m_beforenl_ret_beforenl_w_strnull(char *backup)
 {
-	int		len;
-	char	*result;
-	char	*str;
-
-	if (!s1 || !s2)
-		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	// printf("len s1 -%i, len s2 -%i\n",ft_strlen(s1), ft_strlen(s2));
-	// printf("total len : %i\n", len);
-	result = (char *)malloc(sizeof(char) * (len + 1));
-	if (!result)
-		return (NULL);
-	str = result;
-	while (*s1)
-	{
-		*result = *s1;
-		s1++;
-		result++;
-	}
-	while (*s2)
-	{
-		// printf("*s2: %c\n", *s2);
-		*result = *s2;
-		result++;
-		s2++;
-	}
-	// printf("last carac : %c\n", *(result - 1));
-	*result = '\0';
-	// free(result);
-	// printf("return str : %s\n", str);
-	return (str);
-}
-
-char	*ft_strdup(const char *src, int len)
-{
-	char	*dest;
+	char	*before_nl;
 	int		i;
 
 	i = 0;
-	if(!src)
+	if (!backup[i])
 		return (NULL);
-	dest = malloc(sizeof(char) * len + 1);
-	if (!(dest))
-		return (NULL);
-	while (src[i] && len > 0)
-	{
-		dest[i] = src[i];
+	while (backup[i] && backup[i] != '\n')
 		i++;
-		len--;
+	before_nl = (char *)malloc(sizeof(char) * (i + 2));
+	if (!before_nl)
+		return (NULL);
+	i = 0;
+	while (backup[i] && backup[i] != '\n')
+	{
+		before_nl[i] = backup[i];
+		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	if (backup[i] == '\n')
+	{
+		before_nl[i] = backup[i];
+		i++;
+	}
+	before_nl[i] = '\0';
+	return (before_nl);
+}
+
+char	*join_m_bcplusbuf_ft_bc_ret_bcplusbuf(char *backup, char *buf)
+{
+	char	*bcplusbuf;
+	int		i;
+	int		j;
+
+	if (!backup)
+	{
+		backup = (char *)malloc(sizeof(char) * 1);
+		backup[0] = '\0';
+	}
+	if (!backup || !buf)
+		return (NULL);
+	bcplusbuf = (char *)malloc(sizeof(char) * ((sln(backup) + sln(buf)) + 1));
+	if (!bcplusbuf)
+		return (NULL);
+	i = -1;
+	if (backup)
+		while (backup[++i])
+			bcplusbuf[i] = backup[i];
+	j = 0;
+	while (buf[j])
+		bcplusbuf[i++] = buf[j++];
+	bcplusbuf[sln(backup) + sln(buf)] = '\0';
+	free(backup);
+	return (bcplusbuf);
 }

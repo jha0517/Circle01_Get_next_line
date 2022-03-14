@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyujung <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/11 20:12:04 by hyujung           #+#    #+#             */
-/*   Updated: 2021/12/11 20:12:47 by hyujung          ###   ########.fr       */
+/*   Created: 2022/02/01 20:25:14 by hyujung           #+#    #+#             */
+/*   Updated: 2022/02/02 19:37:37 by hyujung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include <fcntl.h>
+
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
+# include <fcntl.h>
 # include <stdio.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1000
+# endif
 
-int     check_rest(char *rest, char **line);
-// char    *get_next_line(int fd, char **line);
-char    *get_next_line(int fd);
-void	ft_strclr(char *s);
-int     ft_strchr(const char *str, int i, int len);
-int     ft_strlen(const char *str);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strdup(const char *src, int len);
+char	*getl_m_beforenl_ret_beforenl_w_strnull(char *backup);
+char	*join_m_bcplusbuf_ft_bc_ret_bcplusbuf(char *backup, char *buf);
+char	*ft_find_c_in_str(char *backup, int nl);
+char	*readl_m_buf_fr_buf_ret_bc_w_nlnullstr(int fd, char *backup);
+char	*newbc_m_afternl_strnull_fr_bc_ret_afternl(char *backup);
+char	*get_next_line(int fd);
+int		sln(char *str);
 
 #endif
