@@ -4,6 +4,8 @@
 
 The goal of this project is to create a function that reads a file line by line and returns that line to the caller. The function should be able to manage multiple file descriptors simultaneously.
 
+![](image.png)
+
 ## How to Use
 
 1. Clone the repository
